@@ -96,7 +96,7 @@ onCommand(client, 'stats', '', async (msg: Message) => {
 onCommand(
   client,
   'challenge',
-  'Starting Multiplayer Challenge',
+  '',
   (msg: Message) => {
     if (msg.channel.type != 'dm') startChallenge(client, msg.channel as TextChannel, msg)
   }

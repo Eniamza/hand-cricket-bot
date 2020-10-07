@@ -17,6 +17,8 @@ function startChallenge(
   const challenger = msg.author,
     stadium = channel;
 
+  stadium.send('Starting Multiplayer Challenge.');
+
   ask(client, challenger, stadium, 'Who do you want to challenge? (please @mention)', (ans, ansMsg) => {
     const opponentMentions = ansMsg.mentions;
 
