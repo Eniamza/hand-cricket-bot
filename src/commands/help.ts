@@ -1,14 +1,13 @@
 import { DiscordClient } from '../util/discord-client';
+import { version } from '../../package.json';
 import { MessageEmbed, Message } from 'discord.js';
 import DBL from 'dblapi.js';
+import { ICommandMeta } from './command';
 
 export function setHelp(
   client: DiscordClient,
   dbl: DBL | null,
-  commandList: {
-    name: string,
-    desc: string
-  }[]
+  commandList: ICommandMeta[]
 ) {
   client.onCommand('help', '', async (msg: Message, prefix: string) => {
     const helpEmbed = new MessageEmbed()
@@ -25,11 +24,13 @@ In the first half of October, we hosted nearly 2000 single and multi player matc
         ...commandList.map(command => {
           return {
             name: `${prefix}${command.name}`,
-            value: command.desc
+            value: command.desc,
+            inline: true
           }
         })
       )
       .setThumbnail(client.user.displayAvatarURL())
+      .setFooter(`Version: v${version}`)
       .addField(`It's Open Source`, `[Github](https://github.com/HarshKhandeparkar/hand-cricket-bot)`, true);
 
       if (dbl !== null) {
