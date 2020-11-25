@@ -1,11 +1,9 @@
 import { Message, MessageEmbed } from 'discord.js';
 import { DiscordClient } from '../../util/discord-client';
 import { setCommand } from '../command';
-import DBL from 'dblapi.js';
 
 export function setStats(
-  client: DiscordClient,
-  dbl: DBL | null
+  client: DiscordClient
 ) {
   return setCommand(
     client,
@@ -19,16 +17,16 @@ export function setStats(
         .setTitle('Hand Cricketer Stats')
         .addField('Servers', `\`${client.guilds.cache.array().length}\``, true)
         .addField('Users', `\`${client.guilds.cache.array().map(guild => guild.memberCount).reduce((a, b) => a + b)}\``, true)
-        .addField('1P Matches Played', `\`${matchesPlayed.singlePlayer}\``)
-        .addField('2P Matches Played', `\`${matchesPlayed.multiPlayer}\``)
+        .addField('1P Matches Played', `\`${matchesPlayed.singlePlayer}\``, true)
+        .addField('2P Matches Played', `\`${matchesPlayed.multiPlayer}\``, true)
         .setThumbnail(client.user.displayAvatarURL())
         .setColor('RED');
 
-      if (dbl !== null) {
-        const botStats = await dbl.getBot(client.user.id);
+      if (client.dblIntegration) {
+        const botStats = await client.dbl.getBot(client.user.id);
         statsEmbed.addField(`top.gg votes`, `\`${botStats.points}\``, true);
 
-        if (botStats.invite) statsEmbed.addField('Vote and Invite', `[top.gg](https://top.gg/bot/${client.user.id})`, true);
+        if (botStats.invite) statsEmbed.addField('Liked the bot?', `[Vote it!](https://top.gg/bot/${client.user.id}/vote)`);
       }
 
       msg.channel.send(statsEmbed);
